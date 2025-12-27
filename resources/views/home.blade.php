@@ -1,117 +1,286 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 
-@section('content')
+@section('page')
+    <section class="max-w-7xl mx-auto px-6 mt-6">
 
-<div class="container mt-4">
+        <div class="relative rounded-2xl overflow-hidden bg-[#4F4F4F]">
 
-    {{-- ================= HERO SLIDER ================= --}}
-    <div id="heroCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+            {{-- SLIDES --}}
+            <div id="slider" class="relative h-[420px]">
 
-        {{-- Indicator --}}
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
-        </div>
+                {{-- Slide 1 --}}
+                <div class="slide absolute inset-0 opacity-100 transition-opacity duration-700">
+                    <img src="{{ asset('assets/dummy.JPG') }}" class="w-full h-full object-cover" />
+                    <div class="absolute inset-0 bg-black/40"></div>
 
-        {{-- Slides --}}
-        <div class="carousel-inner rounded-4 overflow-hidden">
+                    <div class="absolute bottom-6 left-6 text-white max-w-md">
+                        <h3 class="text-xl font-semibold">Ruang Rapat A</h3>
+                        <p class="text-sm mt-1">
+                            Ruang rapat eksklusif untuk pertemuan formal dan diskusi kelompok
+                        </p>
 
-            @for ($i = 0; $i < 4; $i++)
-            <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
-                <div class="hero-slide"
-                     style="background-image: url('{{ asset('assets/dummy.JPG') }}')">
-
-                    <div class="hero-overlay">
-                        <h3 class="fw-bold">Ruang Rapat A</h3>
-                        <p>Ruang rapat eksklusif untuk pertemuan formal dan diskusi kelompok</p>
-
-                        <div class="d-flex flex-wrap gap-2 mb-3">
-                            <span class="badge bg-dark bg-opacity-75">20 orang</span>
-                            <span class="badge bg-dark bg-opacity-75">TV LED 55"</span>
-                            <span class="badge bg-dark bg-opacity-75">AC</span>
-                            <span class="badge bg-dark bg-opacity-75">Meja Rapat</span>
+                        <div class="flex flex-wrap gap-2 mt-3 text-xs">
+                            <span class="bg-white/20 px-3 py-1 rounded-full">20 orang</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full">TV LED 55"</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full">AC</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full">Meja Rapat</span>
                         </div>
 
-                        <a href="{{ url('/schedule') }}" class="btn btn-light btn-sm px-4 rounded-pill">
-                            Lihat Detail & Jadwal
+                        <a href="#"
+                            class="inline-flex items-center gap-2 mt-4 bg-white text-gray-800 px-4 py-2 rounded-lg text-sm">
+                            Lihat Detail & Jadwal →
                         </a>
                     </div>
+                </div>
 
+                {{-- Slide 2 --}}
+                <div class="slide absolute inset-0 opacity-0 transition-opacity duration-700">
+                    <img src="{{ asset('assets/dummy.JPG') }}" class="w-full h-full object-cover" />
+                    <div class="absolute inset-0 bg-black/40"></div>
+
+                    <div class="absolute bottom-6 left-6 text-white max-w-md">
+                        <h3 class="text-xl font-semibold">Ruang Seminar A</h3>
+                        <p class="text-sm mt-1">
+                            Cocok untuk seminar dan presentasi skala besar
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-3 text-xs">
+                            <span class="bg-white/20 px-3 py-1 rounded-full">20 orang</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full">TV LED 55"</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full">AC</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full">Meja Rapat</span>
+                        </div>
+
+                        <a href="#"
+                            class="inline-flex items-center gap-2 mt-4 bg-white text-gray-800 px-4 py-2 rounded-lg text-sm">
+                            Lihat Detail & Jadwal →
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- ARROW --}}
+            <button onclick="prevSlide()"
+                class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white w-10 h-10 rounded-full">
+                ‹
+            </button>
+
+            <button onclick="nextSlide()"
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white w-10 h-10 rounded-full">
+                ›
+            </button>
+
+            {{-- DOTS --}}
+            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                <span class="dot w-2.5 h-2.5 bg-white rounded-full opacity-100"></span>
+                <span class="dot w-2.5 h-2.5 bg-white rounded-full opacity-40"></span>
+            </div>
+
+        </div>
+    </section>
+    <!-- CTA SECTION -->
+<section class="mt-10">
+    <div class="max-w-7xl mx-auto px-6">
+        <div
+            class="rounded-2xl bg-gradient-to-r from-[#4F4F4F] to-[#3F3F3F] text-white px-8 py-8 flex items-center justify-between">
+
+            <!-- Text -->
+            <div>
+                <h3 class="text-xl font-semibold">
+                    Siap Meminjam Ruangan?
+                </h3>
+                <p class="text-sm text-gray-200 mt-1">
+                    Login atau daftar untuk mengajukan peminjaman ruangan sekarang
+                </p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex items-center gap-4">
+                <a href="/login"
+                   class="bg-white text-gray-800 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
+                    Login Sekarang →
+                </a>
+
+                <a href="/jadwal"
+                   class="border border-white/50 px-5 py-2 rounded-lg text-sm hover:bg-white/10 transition">
+                    Lihat Jadwal
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- JADWAL MENDATANG -->
+<section class="mt-16">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <!-- Judul -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                📅 Jadwal Mendatang
+            </h2>
+            <p class="text-sm text-gray-500 mt-1">
+                Lihat jadwal peminjaman ruangan yang akan berlangsung
+            </p>
+        </div>
+
+        <!-- Grid Card -->
+        <div class="grid grid-cols-2 gap-6">
+
+            <!-- CARD 1 -->
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-gray-800">
+                        Praktikum Algoritma dan Pemrograman
+                    </h3>
+                    <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+                        Akan Datang
+                    </span>
+                </div>
+
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex items-center gap-2">📍 Lab Komputer 1</div>
+                    <div class="flex items-center gap-2">📅 Sabtu, 15 Februari 2025</div>
+                    <div class="flex items-center gap-2">⏰ 09.00 – 11.00</div>
+                    <div class="flex items-center gap-2">👤 Dr. Ahmad Fauzi</div>
                 </div>
             </div>
-            @endfor
 
-        </div>
+            <!-- CARD 2 -->
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-gray-800">
+                        Seminar Nasional Matematika
+                    </h3>
+                    <span class="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
+                        Berlangsung
+                    </span>
+                </div>
 
-        {{-- Arrow --}}
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
-
-    </div>
-    {{-- ================= END HERO ================= --}}
-
-    {{-- ================= CTA ================= --}}
-    <div class="bg-dark text-white rounded-4 p-4 mb-5 d-flex justify-content-between align-items-center">
-        <div>
-            <h5 class="mb-1">Siap Meminjam Ruangan?</h5>
-            <small>Login atau daftar untuk mengajukan peminjaman ruangan sekarang</small>
-        </div>
-        <div class="d-flex gap-2">
-            <a href="{{ url('/login') }}" class="btn btn-light rounded-pill">Login Sekarang</a>
-            <a href="{{ url('/schedule') }}" class="btn btn-outline-light rounded-pill">Lihat Jadwal</a>
-        </div>
-    </div>
-
-    {{-- ================= JADWAL MENDATANG ================= --}}
-    <h5 class="mb-3">Jadwal Mendatang</h5>
-    <div class="row g-3 mb-5">
-        @for ($i = 0; $i < 4; $i++)
-        <div class="col-md-6">
-            <div class="border rounded-4 p-3 h-100">
-                <strong>Praktikum Algoritma</strong>
-                <div class="text-muted small">Lab Komputer 1</div>
-                <div class="text-muted small">15 Februari 2025 • 09.00 - 11.00</div>
-                <span class="badge bg-primary mt-2">Akan Datang</span>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex items-center gap-2">📍 Ruang Seminar A</div>
+                    <div class="flex items-center gap-2">📅 Sabtu, 15 Februari 2025</div>
+                    <div class="flex items-center gap-2">⏰ 13.00 – 15.00</div>
+                    <div class="flex items-center gap-2">👤 Prof. Sri Wahyuni</div>
+                </div>
             </div>
-        </div>
-        @endfor
-    </div>
 
-    {{-- ================= KEUNGGULAN ================= --}}
-    <h5 class="text-center mb-4">Keunggulan Sistem</h5>
-    <div class="row g-4 mb-5 text-center">
-        <div class="col-md-3">
-            <div class="border rounded-4 p-3 h-100">
-                <strong>Sistem Terintegrasi</strong>
-                <p class="small text-muted mt-2">Penjadwalan terpusat dan real-time</p>
+            <!-- CARD 3 -->
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-gray-800">
+                        Kuliah Tamu Data Science
+                    </h3>
+                    <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+                        Akan Datang
+                    </span>
+                </div>
+
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex items-center gap-2">📍 Ruang Kelas 301</div>
+                    <div class="flex items-center gap-2">📅 Minggu, 16 Februari 2025</div>
+                    <div class="flex items-center gap-2">⏰ 08.00 – 10.00</div>
+                    <div class="flex items-center gap-2">👤 Dr. Budi Santoso</div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="border rounded-4 p-3 h-100">
-                <strong>Pilihan Ruangan</strong>
-                <p class="small text-muted mt-2">Lab, kelas, seminar, rapat</p>
+
+            <!-- CARD 4 -->
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-gray-800">
+                        Workshop React & TypeScript
+                    </h3>
+                    <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
+                        Akan Datang
+                    </span>
+                </div>
+
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex items-center gap-2">📍 Lab Komputer 2</div>
+                    <div class="flex items-center gap-2">📅 Minggu, 16 Februari 2025</div>
+                    <div class="flex items-center gap-2">⏰ 13.00 – 15.00</div>
+                    <div class="flex items-center gap-2">👤 Tim IT FMIPA</div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="border rounded-4 p-3 h-100">
-                <strong>Multi User</strong>
-                <p class="small text-muted mt-2">Mahasiswa, dosen, admin</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="border rounded-4 p-3 h-100">
-                <strong>Persetujuan Cepat</strong>
-                <p class="small text-muted mt-2">Online & transparan</p>
-            </div>
+
         </div>
     </div>
+</section>
+<!-- KEUNGGULAN SISTEM -->
+<section class="mt-20">
+    <div class="max-w-7xl mx-auto px-6">
 
-</div>
+        <!-- Judul -->
+        <div class="text-center mb-12">
+            <h2 class="text-2xl font-semibold text-gray-800">
+                Keunggulan Sistem
+            </h2>
+            <p class="text-sm text-gray-500 mt-2 max-w-xl mx-auto">
+                SIPIRANG FMIPA menyediakan solusi lengkap untuk pengelolaan
+                peminjaman ruangan di lingkungan FMIPA
+            </p>
+        </div>
 
+        <!-- Grid Keunggulan -->
+        <div class="grid grid-cols-4 gap-6">
+
+            <!-- Card 1 -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 text-center shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 mx-auto mb-4 bg-gray-100 rounded-lg flex items-center justify-center text-xl">
+                    📅
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2">
+                    Sistem Penjadwalan Terintegrasi
+                </h3>
+                <p class="text-sm text-gray-500">
+                    Kelola jadwal peminjaman ruangan dengan mudah melalui
+                    sistem kalender yang terintegrasi.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 text-center shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 mx-auto mb-4 bg-gray-100 rounded-lg flex items-center justify-center text-xl">
+                    🏢
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2">
+                    Beragam Pilihan Ruangan
+                </h3>
+                <p class="text-sm text-gray-500">
+                    Laboratorium, ruang seminar, ruang kelas, dan ruang rapat
+                    dengan fasilitas lengkap.
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 text-center shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 mx-auto mb-4 bg-gray-100 rounded-lg flex items-center justify-center text-xl">
+                    👥
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2">
+                    Multi-User Access
+                </h3>
+                <p class="text-sm text-gray-500">
+                    Akses untuk dosen, mahasiswa, dan admin dengan sistem
+                    role-based yang aman.
+                </p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6 text-center shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 mx-auto mb-4 bg-gray-100 rounded-lg flex items-center justify-center text-xl">
+                    🛡️
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2">
+                    Proses Persetujuan Cepat
+                </h3>
+                <p class="text-sm text-gray-500">
+                    Pengajuan peminjaman diproses secara online dengan
+                    notifikasi real-time.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
 @endsection
