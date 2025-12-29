@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\RoomCatalogController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('home');
@@ -100,3 +101,8 @@ Route::middleware(['auth', 'admin'])
 Route::get('/room-catalog', [RoomCatalogController::class, 'index'])->name('room.catalog.index');
 
 Route::get('/room-catalog/{room}', [RoomCatalogController::class, 'show'])->name('room.catalog.show');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('user.dashboard');
+});

@@ -25,7 +25,10 @@ class RoomCatalogController extends Controller
         $timeSlots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
 
         // booking pada tanggal itu
-        $bookings = Booking::where('room_id', $room->id)->where('booking_date', $date)->get();
+        $bookings = Booking::where('room_id', $room->id)
+            ->where('booking_date', $date)
+            ->whereIn('status', ['pending', 'approved'])
+            ->get();
 
         return view('room-catalog.show', compact('room', 'date', 'timeSlots', 'bookings'));
     }

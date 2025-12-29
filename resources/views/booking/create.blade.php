@@ -11,6 +11,10 @@
         <form method="POST" action="{{ route('booking.store') }}" class="bg-white rounded-xl p-8 max-w-3xl mx-auto shadow">
             @csrf
 
+            @foreach ($selectedSlots as $slot)
+                <input type="hidden" name="time_slots[]" value="{{ $slot }}">
+            @endforeach
+
             {{-- INFO OTOMATIS --}}
             <div class="mb-6 p-4 bg-blue-50 rounded-lg">
                 <p class="font-medium">{{ $room->name }}</p>
@@ -18,14 +22,23 @@
                     {{ \Carbon\Carbon::parse($date)->translatedFormat('l, d F Y') }}
                 </p>
                 <p class="text-sm text-gray-600">
-                    Jam: {{ implode(', ', $timeSlots) }}
+                    Jam:
+                    {{ $selectedSlots->first() }}
+                    -
+                    {{ \Carbon\Carbon::createFromFormat('H:i', $selectedSlots->last())->addHour()->format('H:i') }}
                 </p>
             </div>
 
+            @php
+                $startTime = $selectedSlots->first();
+                $endTime = \Carbon\Carbon::createFromFormat('H:i', $selectedSlots->last())->addHour()->format('H:i');
+            @endphp
+            
             <input type="hidden" name="room_id" value="{{ $room->id }}">
             <input type="hidden" name="booking_date" value="{{ $date }}">
-            <input type="hidden" name="start_time" value="{{ min($timeSlots) }}">
-            <input type="hidden" name="end_time" value="{{ max($timeSlots) }}">
+            <input type="hidden" name="start_time" value="{{ $startTime }}">
+            <input type="hidden" name="end_time" value="{{ $endTime }}">
+
 
             <h2 class="text-md font-semibold mt-8 mb-4">Data Pemohon</h2>
 
@@ -54,7 +67,8 @@
             {{-- PESERTA --}}
             <div class="mt-4">
                 <label class="block text-sm mb-1">Jumlah Peserta *</label>
-                <input type="number" name="participant_count" required class="w-full border rounded-lg px-4 py-2" placeholder="Contoh: 30">
+                <input type="number" name="participant_count" required class="w-full border rounded-lg px-4 py-2"
+                    placeholder="Contoh: 30">
             </div>
 
             <div class="mt-4">

@@ -18,7 +18,7 @@
                 <div class="bg-white rounded-xl p-5 flex justify-between items-center shadow-sm">
                     <div>
                         <p class="text-sm text-gray-500">Peminjaman Aktif</p>
-                        <p class="text-2xl font-semibold">3</p>
+                        <p class="text-2xl font-semibold">{{ $activeCount }}</p>
                     </div>
                     <div class="bg-blue-500 text-white p-3 rounded-lg">
                         📅
@@ -28,7 +28,7 @@
                 <div class="bg-white rounded-xl p-5 flex justify-between items-center shadow-sm">
                     <div>
                         <p class="text-sm text-gray-500">Pengajuan Pending</p>
-                        <p class="text-2xl font-semibold">2</p>
+                        <p class="text-2xl font-semibold">{{ $pendingCount }}</p>
                     </div>
                     <div class="bg-yellow-400 text-white p-3 rounded-lg">
                         ⏳
@@ -38,7 +38,7 @@
                 <div class="bg-white rounded-xl p-5 flex justify-between items-center shadow-sm">
                     <div>
                         <p class="text-sm text-gray-500">Disetujui</p>
-                        <p class="text-2xl font-semibold">12</p>
+                        <p class="text-2xl font-semibold">{{ $approvedCount }}</p>
                     </div>
                     <div class="bg-green-500 text-white p-3 rounded-lg">
                         ✅
@@ -48,7 +48,7 @@
                 <div class="bg-white rounded-xl p-5 flex justify-between items-center shadow-sm">
                     <div>
                         <p class="text-sm text-gray-500">Ditolak</p>
-                        <p class="text-2xl font-semibold">1</p>
+                        <p class="text-2xl font-semibold">{{ $rejectedCount }}</p>
                     </div>
                     <div class="bg-red-500 text-white p-3 rounded-lg">
                         ❌
@@ -62,40 +62,38 @@
                 <h2 class="text-lg font-semibold mb-4">Aktivitas Terbaru</h2>
 
                 <ul class="space-y-4 text-sm">
+                    @forelse ($recentBookings as $booking)
+                        <li class="flex justify-between">
+                            <div>
+                                Ruang {{ $booking->room->name ?? 'Ruangan' }}
+                                ({{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y') }})
+                                <div class="text-gray-400 text-xs">
+                                    {{ $booking->created_at->diffForHumans() }}
+                                </div>
+                            </div>
 
-                    <li class="flex justify-between">
-                        <div>
-                            Ruang Lab Komputer 1 disetujui untuk 15 Feb 2025
-                            <div class="text-gray-400 text-xs">2 menit lalu</div>
-                        </div>
-                        <span
-                            class="inline-flex items-center justify-center px-4 py-1 text-sm font-medium rounded-full bg-green-100 text-green-600">
-                            Disetujui
-                        </span>
-                    </li>
+                            @php
+                                $statusColor = match ($booking->status) {
+                                    'approved' => 'bg-green-100 text-green-600',
+                                    'pending' => 'bg-yellow-100 text-yellow-600',
+                                    'rejected' => 'bg-red-100 text-red-600',
+                                    'cancelled' => 'bg-gray-200 text-gray-600',
+                                    default => 'bg-gray-100 text-gray-600',
+                                };
 
-                    <li class="flex justify-between">
-                        <div>
-                            Pengajuan Ruang Seminar B menunggu persetujuan
-                            <div class="text-gray-400 text-xs">15 menit lalu</div>
-                        </div>
-                        <span
-                            class="inline-flex items-center justify-center px-4 py-1 text-sm font-medium rounded-full bg-yellow-100 text-yellow-600">
-                            Pending
-                        </span>
-                    </li>
+                                $statusLabel = ucfirst($booking->status);
+                            @endphp
 
-                    <li class="flex justify-between">
-                        <div>
-                            Ruang Kelas 301 ditolak (bentrok jadwal)
-                            <div class="text-gray-400 text-xs">1 jam lalu</div>
-                        </div>
-                        <span
-                            class="inline-flex items-center justify-center px-4 py-1 text-sm font-medium rounded-full bg-red-100 text-red-600">
-                            Ditolak
-                        </span>
-                    </li>
-
+                            <span
+                                class="inline-flex items-center justify-center px-4 py-1 text-sm font-medium rounded-full {{ $statusColor }}">
+                                {{ $statusLabel }}
+                            </span>
+                        </li>
+                    @empty
+                        <li class="text-gray-500">
+                            Belum ada aktivitas peminjaman.
+                        </li>
+                    @endforelse
                 </ul>
             </div>
 
@@ -105,7 +103,8 @@
 
                 <div class="grid grid-cols-2 gap-6">
 
-                    <a href="/room-catalog" class="bg-white rounded-xl p-6 shadow-sm flex items-center gap-4 hover:bg-gray-50">
+                    <a href="/room-catalog"
+                        class="bg-white rounded-xl p-6 shadow-sm flex items-center gap-4 hover:bg-gray-50">
                         <div class="bg-gray-700 text-white p-3 rounded-lg">
                             📆
                         </div>

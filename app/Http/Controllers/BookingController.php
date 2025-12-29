@@ -33,18 +33,18 @@ class BookingController extends Controller
         return view('booking.create', [
             'room' => $room,
             'date' => $request->booking_date,
-            'timeSlots' => $request->time_slots,
+            'selectedSlots' => collect($request->time_slots)->sort()->values(),
             'user' => Auth::user(),
         ]);
     }
 
     public function store(Request $request)
     {
+        
         $request->validate([
             'room_id' => 'required|exists:rooms,id',
             'booking_date' => 'required|date',
-            'start_time' => 'required',
-            'end_time' => 'required',
+            'time_slots' => 'required|array|min:1',
             'pemohon_nama' => 'required',
             'pemohon_nim' => 'required',
             'activity_name' => 'required',
@@ -52,11 +52,17 @@ class BookingController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        $slots = collect($request->time_slots)->sort()->values();
+
+        $startTime = $slots->first();
+
+        $endTime = \Carbon\Carbon::createFromFormat('H:i', $slots->last())->addHour()->format('H:i');
+
         $conflict = Booking::where('room_id', $request->room_id)
             ->where('booking_date', $request->booking_date)
             ->whereIn('status', ['pending', 'approved'])
-            ->where(function ($q) use ($request) {
-                $q->where('start_time', '<', $request->end_time)->where('end_time', '>', $request->start_time);
+            ->where(function ($q) use ($startTime, $endTime) {
+                $q->where('start_time', '<', $endTime)->where('end_time', '>', $startTime);
             })
             ->exists();
 
@@ -70,8 +76,8 @@ class BookingController extends Controller
             'user_id' => Auth::id(),
             'room_id' => $request->room_id,
             'booking_date' => $request->booking_date,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
+            'start_time' => $startTime,
+            'end_time' => $endTime,
             'pemohon_nama' => $request->pemohon_nama,
             'pemohon_nim' => $request->pemohon_nim,
             'activity_name' => $request->activity_name,
