@@ -105,7 +105,7 @@
 
                 <div class="grid grid-cols-2 gap-6">
 
-                    <a href="/schedule" class="bg-white rounded-xl p-6 shadow-sm flex items-center gap-4 hover:bg-gray-50">
+                    <a href="/room-catalog" class="bg-white rounded-xl p-6 shadow-sm flex items-center gap-4 hover:bg-gray-50">
                         <div class="bg-gray-700 text-white p-3 rounded-lg">
                             📆
                         </div>
@@ -115,7 +115,7 @@
                         </div>
                     </a>
 
-                    <a href="/booking/create"
+                    <a href="/room-catalog"
                         class="bg-white rounded-xl p-6 shadow-sm flex items-center gap-4 hover:bg-gray-50">
                         <div class="bg-blue-500 text-white p-3 rounded-lg">
                             ⏱️

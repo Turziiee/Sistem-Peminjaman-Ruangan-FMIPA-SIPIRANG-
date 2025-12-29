@@ -14,6 +14,7 @@ class Room extends Model
         'capacity',
         'facilities',
         'location',
+        'image',
         'status',
     ];
 }

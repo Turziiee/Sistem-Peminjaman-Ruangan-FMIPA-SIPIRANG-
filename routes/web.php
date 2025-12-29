@@ -10,6 +10,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\RoomCatalogController;
 
 Route::get('/', function () {
     return view('home');
@@ -95,3 +96,7 @@ Route::middleware(['auth', 'admin'])
         Route::get('/contact', [AdminContactController::class, 'index'])->name('contact.index');
         Route::delete('/contact/{message}', [AdminContactController::class, 'destroy'])->name('contact.destroy');
     });
+
+Route::get('/room-catalog', [RoomCatalogController::class, 'index'])->name('room.catalog.index');
+
+Route::get('/room-catalog/{room}', [RoomCatalogController::class, 'show'])->name('room.catalog.show');

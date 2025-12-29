@@ -28,12 +28,8 @@
                     Beranda
                 </a>
 
-                <a href="/schedule" class="{{ request()->is('schedule*') ? $active : '' }}">
-                    Jadwal
-                </a>
-
-                <a href="/booking/create" class="{{ request()->is('booking*') ? $active : '' }}">
-                    Peminjaman
+                <a href="/room-catalog" class="{{ request()->is('room-catalog*') ? $active : '' }}">
+                    Ruangan
                 </a>
 
                 <a href="/my-bookings" class="{{ request()->is('my-bookings') ? $active : '' }}">

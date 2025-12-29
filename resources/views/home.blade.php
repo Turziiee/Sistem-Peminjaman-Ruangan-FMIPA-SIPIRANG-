@@ -26,7 +26,7 @@
                             <span class="bg-white/20 px-3 py-1 rounded-full">Meja Rapat</span>
                         </div>
 
-                        <a href="#"
+                        <a href="/room-catalog"
                             class="inline-flex items-center gap-2 mt-4 bg-white text-gray-800 px-4 py-2 rounded-lg text-sm">
                             Lihat Detail & Jadwal →
                         </a>
@@ -50,7 +50,7 @@
                             <span class="bg-white/20 px-3 py-1 rounded-full">Meja Rapat</span>
                         </div>
 
-                        <a href="#"
+                        <a href="/room-catalog"
                             class="inline-flex items-center gap-2 mt-4 bg-white text-gray-800 px-4 py-2 rounded-lg text-sm">
                             Lihat Detail & Jadwal →
                         </a>
@@ -99,11 +99,6 @@
                 <a href="/login"
                    class="bg-white text-gray-800 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
                     Login Sekarang →
-                </a>
-
-                <a href="/jadwal"
-                   class="border border-white/50 px-5 py-2 rounded-lg text-sm hover:bg-white/10 transition">
-                    Lihat Jadwal
                 </a>
             </div>
 

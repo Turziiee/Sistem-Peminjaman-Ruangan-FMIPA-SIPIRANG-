@@ -12,13 +12,29 @@ class BookingController extends Controller
 {
     public function create(Request $request)
     {
+        $request->validate([
+            'room_id' => 'required|exists:rooms,id',
+            'booking_date' => 'required|date',
+            'time_slots' => 'required|array|min:1',
+        ]);
+
         $room = Room::findOrFail($request->room_id);
+
+        $times = collect($request->time_slots)->sort()->values();
+
+        // validasi minimal 1 jam
+        if ($times->count() < 1) {
+            return back()->withErrors('Pilih minimal 1 slot jam');
+        }
+
+        $startTime = $times->first();
+        $endTime = \Carbon\Carbon::parse($times->last())->addHour()->format('H:i');
 
         return view('booking.create', [
             'room' => $room,
-            'date' => $request->date,
-            'start' => $request->start,
-            'end' => $request->end,
+            'date' => $request->booking_date,
+            'timeSlots' => $request->time_slots,
+            'user' => Auth::user(),
         ]);
     }
 
@@ -33,6 +49,7 @@ class BookingController extends Controller
             'pemohon_nim' => 'required',
             'activity_name' => 'required',
             'participant_count' => 'required|integer|min:1',
+            'notes' => 'nullable|string',
         ]);
 
         $conflict = Booking::where('room_id', $request->room_id)
@@ -64,7 +81,7 @@ class BookingController extends Controller
         ]);
         ActivityLogger::log('Mengajukan peminjaman ruangan ID ' . $request->room_id . ' pada ' . $request->booking_date . ' (' . $request->start_time . ' - ' . $request->end_time . ')');
 
-        return redirect()->route('schedule.index')->with('success', 'Pengajuan berhasil dikirim.');
+        return redirect()->route('booking.my')->with('success', 'Pengajuan berhasil dikirim.');
     }
     public function cancel(Booking $booking)
     {
@@ -87,7 +104,7 @@ class BookingController extends Controller
     }
     public function myBookings()
     {
-        $bookings = Booking::with('room')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $bookings = Booking::with('room')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(3);
 
         return view('booking.my', compact('bookings'));
     }

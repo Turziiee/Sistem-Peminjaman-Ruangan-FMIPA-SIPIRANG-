@@ -26,8 +26,7 @@
                             $active = 'bg-[#3A3A3A] text-white shadow-md rounded-lg px-4 py-2';
                         @endphp
                         <a href="/" class="{{ request()->is('/') ? $active : '' }}">Beranda</a>
-                        <a href="/rooms" class="{{ request()->is('rooms*') ? $active : '' }}">Ruangan</a>
-                        <a href="/schedule" class="{{ request()->is('schedule*') ? $active : '' }}">Jadwal</a>
+                        <a href="/room-catalog" class="{{ request()->is('room-catalog') ? $active : '' }}">Ruangan</a>
                         <a href="/faq" class="{{ request()->is('faq') ? $active : '' }}">FAQ</a>
                         <a href="/contact" class="{{ request()->is('contact') ? $active : '' }}">Kontak</a>
                     </nav>
@@ -47,7 +46,6 @@
         @yield('page')
     </main>
 
-    <!-- FOOTER -->
     <!-- FOOTER -->
     <footer class="bg-[#3A3A3A] text-[#D1D1D1] mt-20">
         <div class="max-w-7xl mx-auto px-6 py-12">
@@ -78,8 +76,7 @@
                     </div>
                     <ul class="space-y-2">
                         <li><a href="/" class="hover:text-white">Beranda</a></li>
-                        <li><a href="/rooms" class="hover:text-white">Ruangan</a></li>
-                        <li><a href="/schedule" class="hover:text-white">Jadwal</a></li>
+                        <li><a href="/room-catalog" class="hover:text-white">Ruangan</a></li>
                         <li><a href="/faq" class="hover:text-white">FAQ</a></li>
                         <li><a href="/contact" class="hover:text-white">Kontak</a></li>
                     </ul>
