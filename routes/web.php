@@ -12,6 +12,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\RoomCatalogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 
 Route::get('/', function () {
     return view('home');
@@ -27,16 +28,13 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('user.dashboard');
-    });
-
-    Route::middleware('admin')->group(function () {
-        Route::get('/admin/dashboard', function () {
-            return view('admin.dashboard');
-        });
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 });
+
+Route::middleware(['auth', 'admin'])->get(
+    '/admin/dashboard',
+    [AdminDashboardController::class, 'index']
+)->name('admin.dashboard');
 
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
@@ -69,7 +67,7 @@ Route::middleware(['auth', 'admin'])
     });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.activity.logs');
+    Route::get('/admin/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.activity.index');
 });
 
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');

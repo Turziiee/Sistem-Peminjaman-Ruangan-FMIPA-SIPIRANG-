@@ -12,7 +12,9 @@ class RoomCatalogController extends Controller
 {
     public function index()
     {
-        $rooms = Room::where('status', 'available')->get();
+        $rooms = Room::where('status', 'available')
+        ->latest()
+        ->paginate(9);
 
         return view('room-catalog.index', compact('rooms'));
     }

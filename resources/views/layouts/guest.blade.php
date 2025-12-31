@@ -33,7 +33,7 @@
 
                     <!-- Login -->
                     <a href="/login" class="bg-[#4F4F4F] text-white px-4 py-2 rounded-lg hover:bg-[#3A3A3A] transition">
-                        Login →
+                        Login
                     </a>
 
                 </div>

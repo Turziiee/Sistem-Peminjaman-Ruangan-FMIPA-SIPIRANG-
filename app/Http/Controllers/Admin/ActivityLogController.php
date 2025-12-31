@@ -9,10 +9,10 @@ class ActivityLogController extends Controller
 {
     public function index()
     {
-        $logs = ActivityLog::with('user')
+        $activities = ActivityLog::with('user')
             ->orderBy('log_date', 'desc')
-            ->get();
+            ->paginate(5);
 
-        return view('admin.activity_logs.index', compact('logs'));
+        return view('admin.activity.index', compact('activities'));
     }
 }

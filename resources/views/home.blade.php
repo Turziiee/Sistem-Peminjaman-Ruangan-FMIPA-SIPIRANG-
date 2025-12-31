@@ -98,7 +98,7 @@
             <div class="flex items-center gap-4">
                 <a href="/login"
                    class="bg-white text-gray-800 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
-                    Login Sekarang →
+                    Login Sekarang
                 </a>
             </div>
 

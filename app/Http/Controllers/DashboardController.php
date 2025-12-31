@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ->where('status', 'rejected')
             ->count();
 
-        // AKTIVITAS TERBARU (5 terakhir)
+        // AKTIVITAS TERBARU (3 terakhir)
         $recentBookings = Booking::with('room')
             ->where('user_id', $userId)
             ->latest()

@@ -28,7 +28,18 @@
                     </span>
                 </div>
 
-                <p class="text-gray-600">{{ $room->facilities }}</p>
+                <div class="text-gray-700">
+                    <p class="font-medium mb-2">Fasilitas:</p>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach (explode(',', $room->facilities) as $facility)
+                            @if (trim($facility) !== '')
+                                <span class="px-3 py-1 text-xs bg-white border rounded-full">
+                                    {{ trim($facility) }}
+                                </span>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
 
                 <div class="flex flex-wrap gap-4 text-sm text-gray-700">
                     <div>👥 Kapasitas: <strong>{{ $room->capacity }} orang</strong></div>
@@ -51,7 +62,6 @@
             </form>
 
             {{-- ================== FORM AJUKAN ================== --}}
-            {{-- INI BARU UNTUK BOOKING --}}
             <form method="GET" action="{{ route('booking.create') }}">
 
                 <input type="hidden" name="room_id" value="{{ $room->id }}">

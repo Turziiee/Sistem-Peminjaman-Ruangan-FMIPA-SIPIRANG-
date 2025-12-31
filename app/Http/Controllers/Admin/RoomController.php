@@ -5,61 +5,91 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Booking;
 
 class RoomController extends Controller
 {
     public function index()
     {
-        $rooms = Room::latest()->get();
-        return view('admin.rooms.index', compact('rooms'));
-    }
+        $rooms = Room::latest()->paginate(6);
 
-    public function create()
-    {
-        return view('admin.rooms.create');
-    }
+        $totalRooms = Room::count();
+        $availableRooms = Room::where('status', 'available')->count();
+        $unavailableRooms = Room::where('status', 'unavailable')->count();
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'capacity' => 'required|integer|min:1',
-            'location' => 'required',
-            'status' => 'required|in:available,maintenance',
-        ]);
-
-        Room::create($request->all());
-
-        return redirect()->route('admin.rooms.index')
-                         ->with('success', 'Ruangan berhasil ditambahkan');
+        return view('admin.rooms.index', compact('rooms', 'totalRooms', 'availableRooms', 'unavailableRooms'));
     }
 
     public function edit(Room $room)
     {
-        return view('admin.rooms.edit', compact('room'));
+        return response()->json([
+            'id' => $room->id,
+            'name' => $room->name,
+            'capacity' => $room->capacity,
+            'facilities' => $room->facilities,
+            'location' => $room->location,
+            'status' => $room->status,
+            'image' => $room->image,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'capacity' => 'required|integer|min:1',
+            'facilities' => 'nullable|string',
+            'location' => 'required|string',
+            'status' => 'required|in:available,unavailable',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('rooms', 'public');
+        }
+
+        Room::create($data);
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Ruangan berhasil ditambahkan');
     }
 
     public function update(Request $request, Room $room)
     {
-        $request->validate([
-            'name' => 'required',
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
             'capacity' => 'required|integer|min:1',
-            'location' => 'required',
-            'status' => 'required|in:available,maintenance',
+            'facilities' => 'nullable|string',
+            'location' => 'required|string',
+            'status' => 'required|in:available,unavailable',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $room->update($request->all());
+        if ($request->hasFile('image')) {
+            if ($room->image && Storage::disk('public')->exists($room->image)) {
+                Storage::disk('public')->delete($room->image);
+            }
 
-        return redirect()->route('admin.rooms.index')
-                         ->with('success', 'Ruangan berhasil diperbarui');
+            $data['image'] = $request->file('image')->store('rooms', 'public');
+        }
+
+        $room->update($data);
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Ruangan berhasil diperbarui');
     }
 
     public function destroy(Room $room)
     {
-        $room->delete();
+        $hasActiveBooking = Booking::where('room_id', $room->id)
+            ->whereIn('status', ['pending', 'approved'])
+            ->exists();
 
-        return redirect()->route('admin.rooms.index')
-                         ->with('success', 'Ruangan berhasil dihapus');
+        if ($hasActiveBooking) {
+            return redirect()->route('admin.rooms.index')->with('error', 'Ruangan tidak dapat dihapus karena masih memiliki peminjaman aktif.');
+        }
+
+        $room->delete(); // SOFT DELETE
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Ruangan berhasil dihapus');
     }
 }
-

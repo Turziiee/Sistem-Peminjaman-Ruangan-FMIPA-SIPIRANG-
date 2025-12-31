@@ -19,9 +19,18 @@
                 <div class="p-5 space-y-3">
                     <h3 class="text-lg font-semibold">{{ $room->name }}</h3>
 
-                    <p class="text-gray-500 text-sm">
-                        {{ Str::limit($room->facilities, 80) }}
-                    </p>
+                    <div class="text-sm text-gray-600">
+                        Fasilitas:
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            @foreach (explode(',', $room->facilities) as $facility)
+                                @if (trim($facility) !== '')
+                                    <span class="px-3 py-1 text-xs bg-white border rounded-full">
+                                        {{ trim($facility) }}
+                                    </span>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
 
                     <div class="text-sm text-gray-600 flex items-center gap-2">
                         👥 {{ $room->capacity }} orang
@@ -37,5 +46,8 @@
 
             </div>
         @endforeach
+    </div>
+    <div class="mt-10">
+        {{ $rooms->links() }}
     </div>
 @endsection
