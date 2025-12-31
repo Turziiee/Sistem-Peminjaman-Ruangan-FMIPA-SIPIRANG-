@@ -14,45 +14,33 @@ class FaqController extends Controller
         return view('admin.faqs.index', compact('faqs'));
     }
 
-    public function create()
-    {
-        return view('admin.faqs.create');
-    }
-
     public function store(Request $request)
     {
-        $request->validate([
-            'question' => 'required',
-            'answer' => 'required',
+        $data = $request->validate([
+            'question' => 'required|string',
+            'answer' => 'required|string',
         ]);
 
-        Faq::create([
-            'question' => $request->question,
-            'answer' => $request->answer,
-        ]);
+        Faq::create($data);
 
-        return redirect()->route('admin.faqs.index')
-            ->with('success', 'FAQ berhasil ditambahkan');
+        return redirect()->route('admin.faqs.index')->with('success', 'FAQ berhasil ditambahkan');
     }
 
     public function edit(Faq $faq)
     {
-        return view('admin.faqs.edit', compact('faq'));
+        return response()->json($faq);
     }
-
     public function update(Request $request, Faq $faq)
     {
-        $request->validate([
-            'question' => 'required',
-            'answer' => 'required',
+        $data = $request->validate([
+            'question' => 'required|string',
+            'answer'   => 'required|string',
         ]);
 
-        $faq->update([
-            'question' => $request->question,
-            'answer' => $request->answer,
-        ]);
+        $faq->update($data);
 
-        return redirect()->route('admin.faqs.index')
+        return redirect()
+            ->route('admin.faqs.index')
             ->with('success', 'FAQ berhasil diperbarui');
     }
 
@@ -60,8 +48,6 @@ class FaqController extends Controller
     {
         $faq->delete();
 
-        return redirect()->route('admin.faqs.index')
-            ->with('success', 'FAQ berhasil dihapus');
+        return redirect()->route('admin.faqs.index')->with('success', 'FAQ berhasil dihapus');
     }
 }
-

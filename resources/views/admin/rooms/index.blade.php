@@ -39,7 +39,7 @@
 
             <div class="bg-white rounded-xl p-5 shadow-sm flex justify-between items-center">
                 <div>
-                    <p class="text-sm text-gray-500">Tidak Tersedia</p>
+                    <p class="text-sm text-gray-500">Maintenance</p>
                     <p class="text-2xl font-semibold">{{ $unavailableRooms }}</p>
                 </div>
                 <div class="bg-red-500 text-white p-3 rounded-lg">❌</div>
@@ -74,7 +74,7 @@
                         <span
                             class="px-3 py-1 text-sm rounded-full
                             {{ $room->status === 'available' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
-                            {{ $room->status === 'available' ? 'Tersedia' : 'Tidak Tersedia' }}
+                            {{ $room->status === 'available' ? 'Tersedia' : 'Maintenance' }}
                         </span>
                     </div>
 

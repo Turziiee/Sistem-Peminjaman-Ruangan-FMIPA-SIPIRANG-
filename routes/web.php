@@ -13,10 +13,9 @@ use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\RoomCatalogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -31,10 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 });
 
-Route::middleware(['auth', 'admin'])->get(
-    '/admin/dashboard',
-    [AdminDashboardController::class, 'index']
-)->name('admin.dashboard');
+Route::middleware(['auth', 'admin'])
+    ->get('/admin/dashboard', [AdminDashboardController::class, 'index'])
+    ->name('admin.dashboard');
 
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
@@ -93,6 +91,7 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
         Route::get('/contact', [AdminContactController::class, 'index'])->name('contact.index');
+        Route::get('/contact/{message}', [AdminContactController::class, 'show'])->name('contact.show');
         Route::delete('/contact/{message}', [AdminContactController::class, 'destroy'])->name('contact.destroy');
     });
 
@@ -101,6 +100,5 @@ Route::get('/room-catalog', [RoomCatalogController::class, 'index'])->name('room
 Route::get('/room-catalog/{room}', [RoomCatalogController::class, 'show'])->name('room.catalog.show');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('user.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 });

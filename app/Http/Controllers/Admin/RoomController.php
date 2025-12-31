@@ -16,7 +16,7 @@ class RoomController extends Controller
 
         $totalRooms = Room::count();
         $availableRooms = Room::where('status', 'available')->count();
-        $unavailableRooms = Room::where('status', 'unavailable')->count();
+        $unavailableRooms = Room::where('status', 'maintenance')->count();
 
         return view('admin.rooms.index', compact('rooms', 'totalRooms', 'availableRooms', 'unavailableRooms'));
     }
@@ -41,7 +41,7 @@ class RoomController extends Controller
             'capacity' => 'required|integer|min:1',
             'facilities' => 'nullable|string',
             'location' => 'required|string',
-            'status' => 'required|in:available,unavailable',
+            'status' => 'required|in:available,maintenance',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -61,7 +61,7 @@ class RoomController extends Controller
             'capacity' => 'required|integer|min:1',
             'facilities' => 'nullable|string',
             'location' => 'required|string',
-            'status' => 'required|in:available,unavailable',
+            'status' => 'required|in:available,maintenance',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 

@@ -43,7 +43,7 @@
                 <label class="block text-sm mb-1">Status *</label>
                 <select name="status" id="status" class="w-full border rounded-lg px-4 py-2">
                     <option value="available">Tersedia</option>
-                    <option value="unavailable">Tidak Tersedia</option>
+                    <option value="maintenance">Maintenance</option>
                 </select>
             </div>
 

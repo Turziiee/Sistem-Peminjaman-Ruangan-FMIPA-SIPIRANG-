@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Room;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\ActivityLogger;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -20,27 +21,34 @@ class BookingController extends Controller
 
         $room = Room::findOrFail($request->room_id);
 
+        // ⛔ BLOK JIKA MAINTENANCE
+        if ($room->status === 'maintenance') {
+            return redirect()
+                ->route('room.catalog.show', $room)
+                ->withErrors([
+                    'maintenance' => 'Ruangan sedang maintenance dan tidak dapat dipesan.',
+                ]);
+        }
+
         $times = collect($request->time_slots)->sort()->values();
 
-        // validasi minimal 1 jam
         if ($times->count() < 1) {
             return back()->withErrors('Pilih minimal 1 slot jam');
         }
 
         $startTime = $times->first();
-        $endTime = \Carbon\Carbon::parse($times->last())->addHour()->format('H:i');
+        $endTime = Carbon::parse($times->last())->addHour()->format('H:i');
 
         return view('booking.create', [
             'room' => $room,
             'date' => $request->booking_date,
-            'selectedSlots' => collect($request->time_slots)->sort()->values(),
+            'selectedSlots' => $times,
             'user' => Auth::user(),
         ]);
     }
 
     public function store(Request $request)
     {
-        
         $request->validate([
             'room_id' => 'required|exists:rooms,id',
             'booking_date' => 'required|date',
@@ -52,17 +60,25 @@ class BookingController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        $room = Room::findOrFail($request->room_id);
+
+        if ($room->status === 'maintenance') {
+            return back()->withErrors([
+                'maintenance' => 'Ruangan sedang maintenance dan tidak dapat dipesan.',
+            ]);
+        }
+
         $slots = collect($request->time_slots)->sort()->values();
 
         $startTime = $slots->first();
-
-        $endTime = \Carbon\Carbon::createFromFormat('H:i', $slots->last())->addHour()->format('H:i');
+        $endTime = Carbon::createFromFormat('H:i', $slots->last())->addHour()->format('H:i');
 
         $conflict = Booking::where('room_id', $request->room_id)
             ->where('booking_date', $request->booking_date)
             ->whereIn('status', ['pending', 'approved'])
             ->where(function ($q) use ($startTime, $endTime) {
-                $q->where('start_time', '<', $endTime)->where('end_time', '>', $startTime);
+                $q->where('start_time', '<', $endTime)
+                  ->where('end_time', '>', $startTime);
             })
             ->exists();
 
@@ -85,10 +101,17 @@ class BookingController extends Controller
             'notes' => $request->notes,
             'status' => 'pending',
         ]);
-        ActivityLogger::log('Mengajukan peminjaman ruangan ID ' . $request->room_id . ' pada ' . $request->booking_date . ' (' . $request->start_time . ' - ' . $request->end_time . ')');
+
+        ActivityLogger::log(
+            'Mengajukan peminjaman ruangan ID ' .
+            $request->room_id . ' pada ' .
+            $request->booking_date . ' (' .
+            $startTime . ' - ' . $endTime . ')'
+        );
 
         return redirect()->route('booking.my')->with('success', 'Pengajuan berhasil dikirim.');
     }
+
     public function cancel(Booking $booking)
     {
         if ($booking->user_id !== Auth::id()) {
@@ -101,16 +124,19 @@ class BookingController extends Controller
             ]);
         }
 
-        $booking->update([
-            'status' => 'cancelled',
-        ]);
+        $booking->update(['status' => 'cancelled']);
+
         ActivityLogger::log('Membatalkan peminjaman ID ' . $booking->id);
 
-        return redirect()->back()->with('success', 'Peminjaman berhasil dibatalkan');
+        return back()->with('success', 'Peminjaman berhasil dibatalkan');
     }
+
     public function myBookings()
     {
-        $bookings = Booking::with('room')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(3);
+        $bookings = Booking::with('room')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->paginate(3);
 
         return view('booking.my', compact('bookings'));
     }
