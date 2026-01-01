@@ -5,8 +5,8 @@
             <!-- LOGO -->
             <a href="{{ auth()->check() && auth()->user()->role === 'admin' ? '/admin/dashboard' : '/dashboard' }}"
                 class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center">
-                    🏢
+                <div class="bg-white rounded-lg p-1.5 shadow">
+                    <img src="{{ asset('assets/logofmipa.png') }}" alt="Logo FMIPA" class="w-9 h-9 object-contain">
                 </div>
                 <div>
                     <div class="font-semibold">SIPIRANG FMIPA</div>
@@ -52,9 +52,11 @@
                         $active = 'bg-white/10 shadow rounded-lg px-3 py-1';
                     @endphp
                     <a href="/admin/dashboard" class="{{ request()->is('admin/dashboard') ? $active : '' }}">Beranda</a>
-                    <a href="/admin/activity-logs" class="{{ request()->is('admin/activity-logs') ? $active : '' }}">Log Aktivitas</a>
+                    <a href="/admin/activity-logs" class="{{ request()->is('admin/activity-logs') ? $active : '' }}">Log
+                        Aktivitas</a>
                     <a href="/admin/rooms" class="{{ request()->is('admin/rooms') ? $active : '' }}">Kelola Ruangan</a>
-                    <a href="/admin/bookings" class="{{ request()->is('admin/bookings') ? $active : '' }}">Kelola Peminjaman</a>
+                    <a href="/admin/bookings" class="{{ request()->is('admin/bookings') ? $active : '' }}">Kelola
+                        Peminjaman</a>
                     <a href="/admin/faqs" class="{{ request()->is('admin/faqs') ? $active : '' }}">Kelola FAQ</a>
                     <a href="/admin/contact" class="{{ request()->is('admin/contact') ? $active : '' }}">Pesan</a>
                 @endif

@@ -6,9 +6,7 @@
 
     <!-- LOGO (KLIK = HOME) -->
     <a href="/" class="flex flex-col items-center mb-6">
-        <div class="w-12 h-12 bg-[#4F4F4F] rounded-xl flex items-center justify-center text-white text-xl">
-            🏢
-        </div>
+        <img src="{{ asset('assets/logofmipa.png') }}" alt="Logo FMIPA" class="w-25 h-25 object-contain">
         <div class="mt-2 font-semibold text-gray-700">
             SIPIRANG FMIPA
         </div>

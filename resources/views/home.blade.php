@@ -21,9 +21,6 @@
 
                             <div class="absolute bottom-6 left-6 text-white max-w-md">
                                 <h3 class="text-xl font-semibold">{{ $room->name }}</h3>
-                                <p class="text-sm mt-1">
-                                    {{ Str::limit($room->facilities, 80) }}
-                                </p>
 
                                 <div class="flex flex-wrap gap-2 mt-3 text-xs">
                                     <span class="bg-white/20 px-3 py-1 rounded-full">

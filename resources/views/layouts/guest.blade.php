@@ -11,9 +11,7 @@
 
                     <!-- Logo -->
                     <div class="flex items-center gap-2 font-semibold">
-                        <div class="w-9 h-9 bg-gray-700 rounded-lg flex items-center justify-center text-white">
-                            🏢
-                        </div>
+                        <img src="{{ asset('assets/logofmipa.png') }}" alt="Logo FMIPA" class="w-11 h-11 object-contain">
                         <div>
                             <div>SIPIRANG FMIPA</div>
                             <div class="text-xs text-gray-500">Sistem Peminjaman Ruangan</div>
