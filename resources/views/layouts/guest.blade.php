@@ -30,11 +30,17 @@
                     </nav>
 
                     <!-- Login -->
-                    <a href="/login" class="bg-[#4F4F4F] text-white px-4 py-2 rounded-lg hover:bg-[#3A3A3A] transition">
-                        Login
-                    </a>
-
+                    <div class="flex items-center gap-3">
+                        <a href="/login"
+                            class="bg-[#4F4F4F] text-white px-4 py-2 rounded-lg hover:bg-[#3A3A3A] transition">
+                            Login
+                        </a>
+                        <a href="/register"
+                            class="border border-gray-400 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
+                            Register
+                        </a>
                 </div>
+            </div>
             </div>
         </header>
     @endif
