@@ -51,9 +51,9 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm mb-1">NIM *</label>
+                    <label class="block text-sm mb-1">NIM/NIDN *</label>
                     <input type="text" name="pemohon_nim" required class="w-full border rounded-lg px-4 py-2"
-                        placeholder="Nomor induk mahasiswa">
+                        placeholder="Nomor induk mahasiswa/dosen">
                 </div>
 
             </div>
